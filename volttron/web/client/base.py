@@ -41,13 +41,17 @@ class Http:
 
     def post(self, url: str, headers: Optional[Dict[str, str]] = None, auth_required: bool = True,
              json: Optional[Dict[str, Any]] = None, **kwargs):
-
+        _log.debug(get_header(f"POST {url}"))
+        if not url.startswith("http"):
+            url = self.get_url(url)
         headers = self.get_headers(headers, auth_required)
 
         if json is not None:
             headers['Content-Type'] = 'application/json'
 
-        return requests.post(url=url, headers=headers, json=json, **kwargs)
+        response = requests.post(url=url, headers=headers, json=json, **kwargs)
+        _log.debug(get_footer(f"END POST {url}"))
+        return response
 
     def get(self, url: str, headers: Optional[Dict[str, str]] = None, auth_required: bool = True,
             **kwargs):
@@ -64,11 +68,23 @@ class Http:
         _log.debug(get_footer(f"END GET {url}"))
         return response
 
-    def delete(self):
-        pass
+    def delete(self, url, headers: Optional[Dict[str, str]] = None, **kwargs):
+        _log.debug(get_header(f"DELETE {url} {kwargs}"))
+        if not url.startswith("http"):
+            url = self.get_url(url)
+        headers = self.get_headers(headers)
+        response = requests.delete(url=url, headers=headers, **kwargs)
+        _log.debug(get_footer(f"END DELETE {url}"))
+        return response
 
-    def put(self):
-        pass
+    def put(self, url: str, headers: Optional[Dict[str, str]] = None, **kwargs):
+        _log.debug(get_header(f"PUT {url} {kwargs}"))
+        if not url.startswith("http"):
+            url = self.get_url(url)
+        headers = self.get_headers(headers)
+        response = requests.put(url=url, headers=headers, **kwargs)
+        _log.debug(get_footer(f"END PUT {url}"))
+        return response
 
 
 class Authentication(Http):
