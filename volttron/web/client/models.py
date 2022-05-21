@@ -257,7 +257,7 @@ class AgentRPC(Http):
     def execute(self, function_name: str, **kwargs) -> RPCResponse:
         link = get_link(function_name, self.links)
         if link is None:
-            raise InvalidRPCFunction(f"{function_name}")
+            raise InvalidRPCFunction(f"{function_name} does not exist")
 
         body = {}
         for k, v in kwargs.items():
