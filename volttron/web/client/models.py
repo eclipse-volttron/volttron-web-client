@@ -8,7 +8,7 @@ from volttron.web.client.base import Http, AuthenticationError
 
 _log = logging.getLogger(__name__)
 
-LINK_IDENTIFIER = 'route_options'
+LINK_IDENTIFIER = 'links'
 
 
 @dataclass
